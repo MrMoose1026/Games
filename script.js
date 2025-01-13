@@ -4,6 +4,16 @@ const playerTurn = document.getElementById("playerTurn");
 const startScreen = document.querySelector(".startScreen");
 const startButton = document.getElementById("start");
 const message = document.getElementById("message");
+const p1 = document.getElementById("p1");
+const p2 = document.getElementById("p2");
+const draw = document.getElementById("draw");
+let p1w = document.querySelector("#p1 > span");
+let p2w = document.querySelector("#p2 > span");
+let dra = document.querySelector("#draw > span");
+p1w.textContent = 0;
+p2w.textContent = 0;
+dra.textContent = 0;
+let gameNumber = 0;
 let initialMatrix = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -36,19 +46,19 @@ const verifyArray = (arrayElement) => {
 };
 
 //Check for game over(Last step)
-const gameOverCheck = () => {
+function gameOverCheck() {
   let truthCounnt = 0;
   for (let innerArray of initialMatrix) {
     if (innerArray.every((val) => val != 0)) {
       truthCounnt += 1;
     } else {
       return false;
-    }
-  }
-  if (truthCounnt == 6) {
+    };
+  };
+  if (truthCounnt == 6) {   
     message.innerText = "Game Over";
     startScreen.classList.remove("hide");
-  }
+  } return true
 };
 
 //Check rows
@@ -178,6 +188,10 @@ const setPiece = (startCount, colValue) => {
     initialMatrix[startCount][colValue] = currentPlayer;
     //Check for wins
     if (winCheck(startCount, colValue)) {
+      if (currentPlayer == 1) {p1w.textContent = p1w.textContent -0+1
+      }
+      else {p2w.textContent = p2w.textContent -0+1
+      }
       message.innerHTML = `Player<span> ${currentPlayer}</span> Wins`;
       startScreen.classList.remove("hide");
       return false;
@@ -185,6 +199,7 @@ const setPiece = (startCount, colValue) => {
   }
   //Check if all are full
   gameOverCheck();
+  if (gameOverCheck() == true) {dra.textContent = gameNumber - p1w.textContent - p2w.textContent};
 };
 
 //When user clicks on a box
@@ -232,4 +247,5 @@ window.onload = startGame = async () => {
 startButton.addEventListener("click", () => {
   startScreen.classList.add("hide");
   startGame();
+	gameNumber++
 });
